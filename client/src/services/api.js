@@ -12,9 +12,10 @@ API.interceptors.request.use((reqConf)=>{
     return reqConf;
 });
 
-export const fetchP=async()=>{
+export const fetchP=async(cat)=>{
     try{
-        const res=await API.get('/posts');
+        const url=cat && cat!=='All' ? `/posts?category=${encodeURIComponent(cat)}` : '/posts';
+        const res=await API.get(url);
         return res.data.data||res.data;
     }catch(error){
         console.error('Error in fetchinng',error);
@@ -22,12 +23,12 @@ export const fetchP=async()=>{
     }
 };
 
-export const fetchPID=async(id)=>{
+export const fetchPID=async(idOrSlug)=>{
     try{
-        const res=await API.get(`/posts/${id}`);
+        const res=await API.get(`/posts/${idOrSlug}`);
         return res.data.data||res.data;
     }catch(error){
-        console.error(`Error in fetchinng id ${id}`,error);
+        console.error(`Error in fetchinng id ${idOrSlug}`,error);
         throw error;
     }
 };
@@ -78,6 +79,80 @@ export const deletePost=async(id)=>{
         return res.data;
     }catch(error){
         console.error('Error deleting post',error);
+        throw error;
+    }
+};
+
+export const fetchCats=async()=>{
+    try{
+        const res=await API.get('/categories');
+        return res.data.data||res.data;
+    }catch(error){
+        console.error('Error fetching categories',error);
+        throw error;
+    }
+};
+
+export const createCat=async(catObj)=>{
+    try{
+        const res=await API.post('/categories',catObj);
+        return res.data.data||res.data;
+    }catch(error){
+        console.error('Error creating category',error);
+        throw error;
+    }
+};
+
+export const deleteCat=async(id)=>{
+    try{
+        const res=await API.delete(`/categories/${id}`);
+        return res.data;
+    }catch(error){
+        console.error('Error deleting category',error);
+        throw error;
+    }
+};
+
+export const fetchAuthors=async()=>{
+    try{
+        const res=await API.get('/authors');
+        return res.data.data||res.data;
+    }catch(error){
+        console.error('Error fetching authors',error);
+        throw error;
+    }
+};
+
+export const createAuthor=async(authObj)=>{
+    try{
+        const res=await API.post('/authors',authObj);
+        return res.data.data||res.data;
+    }catch(error){
+        console.error('Error creating author',error);
+        throw error;
+    }
+};
+
+export const deleteAuthor=async(id)=>{
+    try{
+        const res=await API.delete(`/authors/${id}`);
+        return res.data;
+    }catch(error){
+        console.error('Error deleting author',error);
+        throw error;
+    }
+};
+
+export const uploadImage=async(file)=>{
+    try{
+        const formData=new FormData();
+        formData.append('image',file);
+        const res=await API.post('/upload',formData,{
+            headers:{'Content-Type':'multipart/form-data'}
+        });
+        return res.data;
+    }catch(error){
+        console.error('Error uploading image',error);
         throw error;
     }
 };

@@ -3,7 +3,15 @@ import mongoose from "mongoose";
 const pschema=new mongoose.Schema({
     title:{
         type:String,
-        required:true
+        required:true,
+        trim:true
+    },
+    slug:{
+        type:String,
+        unique:true,
+        sparse:true,
+        lowercase:true,
+        trim:true
     },
     descript:{
         type:String,
@@ -17,13 +25,17 @@ const pschema=new mongoose.Schema({
         type:String,
         required:true
     },
+    tags:{
+        type:[String],
+        default:[]
+    },
     author:{
         type:String,
         required:true
     },
     image:{
         type:String,
-        required:false
+        default:''
     },
     featured:{
         type:Boolean,
@@ -32,13 +44,24 @@ const pschema=new mongoose.Schema({
     status:{
         type:String,
         required:true,
-        enum:['draft','published'],
+        enum:['draft','published','scheduled'],
         default:'draft'
-    }},
-    {
-    timestamps:true
+    },
+    scheduledAt:{
+        type:Date
+    },
+    seoTitle:{
+        type:String,
+        default:''
+    },
+    metaDesc:{
+        type:String,
+        default:''
     }
-);
+},
+{
+    timestamps:true
+});
 
 const post=mongoose.model('Post',pschema);
 export default post;

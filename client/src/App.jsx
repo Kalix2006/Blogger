@@ -2,11 +2,14 @@ import {BrowserRouter as Router,Routes,Route,useLocation} from 'react-router-dom
 import Home from './pages/home.jsx';
 import Blogs from './pages/blogs.jsx';
 import Navbar from './components/navbar.jsx';
+import Footer from './components/footer.jsx';
 import CompleteBlog from './pages/FullBlog.jsx';
 import AdminLogin from './pages/AdminLogin.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import CreatePost from './pages/CreatePost.jsx';
 import EditPost from './pages/EditPost.jsx';
+import ManageCats from './pages/ManageCats.jsx';
+import ManageAuthors from './pages/ManageAuthors.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function AppContent(){
@@ -16,7 +19,7 @@ function AppContent(){
         <>
             {!loc.pathname.startsWith('/admin') && <Navbar/>}
             {loc.pathname==='/admin/login' && <Navbar/>}
-            <div className={isAdmin ? '' : 'container my-4'}>
+            <div className={isAdmin ? '' : 'container my-4 flex-grow-1'}>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/blogs" element={<Blogs/>}/>
@@ -25,8 +28,11 @@ function AppContent(){
                     <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard/></ProtectedRoute>}/>
                     <Route path="/admin/create" element={<ProtectedRoute><CreatePost/></ProtectedRoute>}/>
                     <Route path="/admin/edit/:id" element={<ProtectedRoute><EditPost/></ProtectedRoute>}/>
+                    <Route path="/admin/categories" element={<ProtectedRoute><ManageCats/></ProtectedRoute>}/>
+                    <Route path="/admin/authors" element={<ProtectedRoute><ManageAuthors/></ProtectedRoute>}/>
                 </Routes>
             </div>
+            {!isAdmin && <Footer/>}
         </>
     );
 }

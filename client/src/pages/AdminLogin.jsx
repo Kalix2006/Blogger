@@ -38,6 +38,9 @@ export default function AdminLogin(){
     return(
         <div className="container d-flex justify-content-center align-items-center" style={{minHeight:'75vh'}}>
             <div className="card shadow-sm border-0 p-4" style={{width:'100%',maxWidth:'400px'}}>
+                <div className="text-center mb-3">
+                    <img src="/logo.png" alt="Blogger" width="64" height="64" className="rounded-circle shadow-sm border p-1"/>
+                </div>
                 <h3 className="fw-bold text-center mb-3">Admin Login</h3>
                 {errMsg && <div className="alert alert-danger py-2">{errMsg}</div>}
                 <form onSubmit={doLogin}>
