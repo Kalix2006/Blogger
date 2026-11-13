@@ -73,11 +73,20 @@ export default function CompleteBlog(){
         );
     }
 
-    const curIdx=allP.findIndex((p)=>p._id===post._id || p.slug===post.slug);
+    const curIdx=allP.findIndex((p)=>{
+        if(post._id && p._id && String(p._id)===String(post._id)){
+            return true;
+        }
+        if(post.slug && p.slug && p.slug===post.slug){
+            return true;
+        }
+        return false;
+    });
+
     const prevP=curIdx>0 ? allP[curIdx-1] : null;
     const nextP=curIdx>=0 && curIdx<allP.length-1 ? allP[curIdx+1] : null;
 
-    const related=allP.filter((p)=>p.category===post.category && p._id!=post._id).slice(0,3);
+    const related=allP.filter((p)=>p.category===post.category && String(p._id)!==String(post._id)).slice(0,3);
 
     const fullTxt=post.content || post.descript || '';
     const rawLines=fullTxt.split('\n');
