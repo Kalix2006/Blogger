@@ -44,7 +44,7 @@ export default function Navbar(){
                             </a>
                             <ul className='dropdown-menu dropdown-menu-dark'>
                                 <li><Link className='dropdown-item' to="/blogs?category=Technology">Technology</Link></li>
-                                <li><Link className='dropdown-item' to="/blogs?category=WebDevelopment">WebDevelopment</Link></li>
+                                <li><Link className='dropdown-item' to="/blogs?category=WebDevelopment">Web Development</Link></li>
                                 <li><Link className='dropdown-item' to="/blogs?category=AI">AI & Machine Learning</Link></li>
                             </ul>
                         </li>
