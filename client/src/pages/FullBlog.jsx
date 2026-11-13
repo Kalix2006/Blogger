@@ -10,6 +10,7 @@ export default function CompleteBlog(){
     const[error,setError]=useState(null);
     const[copiedAlert,setCopiedAlert]=useState(false);
     const {id}=useParams();
+    const defBanner='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';
 
     useEffect(()=>{
         const getPostAndRealated=async()=>{
@@ -305,16 +306,15 @@ export default function CompleteBlog(){
                 </div>
             </div>
 
-            {post.image &&(
-                <div className="mb-4 text-center">
-                    <img
-                        src={post.image}
-                        alt={post.title}
-                        className="img-fluid rounded shadow-sm w-100"
-                        style={{maxHeight:'450px',objectFit:'cover'}}
-                    />
-                </div>
-            )}
+            <div className="mb-4 text-center">
+                <img
+                    src={post.image || defBanner}
+                    alt={post.title}
+                    className="img-fluid rounded shadow-sm w-100"
+                    style={{maxHeight:'450px',objectFit:'cover'}}
+                    onError={(e)=>{e.currentTarget.src=defBanner;}}
+                />
+            </div>
 
             {tocList.length>=2 && (
                 <div className="card shadow-sm border-0 bg-light p-3 mb-4">

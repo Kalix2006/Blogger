@@ -2,17 +2,17 @@ import {Link} from 'react-router-dom';
 
 export default function Bcard({post}){
     const targetLink=`/blogs/${post.slug || post._id}`;
+    const defImg='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80';
 
     return(
         <div className='card h-100 shadow-sm border-0'>
-            {post.image &&(
-                <img
-                    src={post.image}
-                    className='card-img-top'
-                    alt={post.title}
-                    style={{height:'200px',objectFit:'cover'}}
-                />
-            )}
+            <img
+                src={post.image || defImg}
+                className='card-img-top'
+                alt={post.title}
+                style={{height:'200px',objectFit:'cover'}}
+                onError={(e)=>{e.currentTarget.src=defImg;}}
+            />
             <div className='card-body d-flex flex-column'>
                 <div className='mb-2 d-flex flex-wrap gap-1'>
                     <span className='badge bg-secondary'>{post.category}</span>
