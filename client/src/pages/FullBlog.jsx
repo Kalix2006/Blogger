@@ -14,15 +14,16 @@ export default function CompleteBlog(){
         const getPostAndRealated=async()=>{
             try{
                 setLoad(true);
-                const data=await fetchP();
-                setAllP(data);
+                const allData=await fetchP();
+                const plist=Array.isArray(allData)?allData:(allData.data||[]);
+                setAllP(plist);
 
-                const foundP=data.find((p)=>p._id===id);
-                if(!foundP){
+                const singleP=await fetchPID(id);
+                if(!singleP){
                     setError('Post not found.');
                 }
                 else{
-                    setPost(foundP);
+                    setPost(singleP);
                 }
             }
             catch(error){

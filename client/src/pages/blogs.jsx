@@ -22,7 +22,7 @@ export default function Blogs(){
         const getposts=async()=>{
             try{
                 const Postdata=await fetchP();
-                setPosts(Postdata);
+                setPosts(Array.isArray(Postdata)?Postdata:(Postdata.data||[]));
             }
             catch(error){
                 setError('failed to load.chek backend');

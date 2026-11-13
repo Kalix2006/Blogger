@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import pRoute from './routes/pRoute.js';
 import authRoute from './routes/authRoute.js';
+import adminRoute from './routes/adminRoute.js';
 
 dotenv.config();
 
@@ -12,14 +13,15 @@ const app=express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/api/auth', authRoute);
+app.use('/api/auth',authRoute);
 app.use('/api/posts',pRoute);
+app.use('/api/admin',adminRoute);
 
 app.get('/api/health',(req,res)=>{
     res.json({
         sucesss:true,
         msg:'servr running',
-        db: 'connected'
+        db:'connected'
     });
 });
 

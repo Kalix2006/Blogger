@@ -11,7 +11,7 @@ export default function Home(){
         const getposts=async()=>{
             try{
                 const Postdata=await fetchP();
-                setPosts(Postdata);
+                setPosts(Array.isArray(Postdata)?Postdata:(Postdata.data||[]));
             }
             catch(error){
                 setError('failed to load.chek backend');
@@ -66,7 +66,7 @@ export default function Home(){
                         <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
                             <h2 className="fw-bold m-0">Latest Articles</h2>
                             <Link to="/blogs" className="text-dark text-decoration-none fw-semibold">
-                                View All &&rarr;
+                                View All &rarr;
                             </Link>
                         </div>
                         <div className="row g-4">

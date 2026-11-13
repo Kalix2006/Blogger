@@ -25,6 +25,10 @@ const pschema=new mongoose.Schema({
         type:String,
         required:false
     },
+    featured:{
+        type:Boolean,
+        default:false
+    },
     status:{
         type:String,
         required:true,
