@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import {fileURLToPath} from 'url';
 import pRoute from './routes/pRoute.js';
 import authRoute from './routes/authRoute.js';
@@ -16,12 +17,16 @@ import mongooseConnection from './config/db.js';
 
 const __filename=fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename);
+const uploadDir=path.join(__dirname,'uploads');
+if(!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir,{recursive:true});
+}
 
 const app=express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/uploads',express.static(path.join(__dirname,'uploads')));
+app.use('/uploads',express.static(uploadDir));
 
 app.use('/api/auth',authRoute);
 app.use('/api/posts',pRoute);
