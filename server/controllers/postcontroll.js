@@ -10,16 +10,27 @@ const makeSlug=(txt)=>{
         .replace(/^-+|-+$/g,'');
 };
 
+export const syncScheduled=async()=>{
+    try{
+        const curDate=new Date();
+        await Post.updateMany(
+            {
+                status:'scheduled',
+                scheduledAt:{$lte:curDate}
+            },
+            {
+                $set:{status:'published'}
+            }
+        );
+    }catch(err){
+        console.error('sync error',err);
+    }
+};
+
 export const getP=async(req,res)=>{
     try{
-        const nowDate=new Date();
-        const pubCondition={
-            $or:[
-                {status:'published'},
-                {status:'scheduled',scheduledAt:{$lte:nowDate}}
-            ]
-        };
-        const filter=req.query.all==='true'?{}:pubCondition;
+        await syncScheduled();
+        const filter=req.query.all==='true'?{}:{status:'published'};
         if(req.query.category && req.query.category!=='All'){
             filter.category=req.query.category;
         }
@@ -32,6 +43,7 @@ export const getP=async(req,res)=>{
 
 export const getPID=async(req,res)=>{
     try{
+        await syncScheduled();
         const paramId=req.params.id;
         let Pid=null;
         if(mongoose.Types.ObjectId.isValid(paramId)){
@@ -64,6 +76,14 @@ export const createP=async(req,res)=>{
         }else if(typeof bodyObj.tags==='string'){
             bodyObj.tags=bodyObj.tags.split(',').map((t)=>t.trim()).filter(Boolean);
         }
+        if(bodyObj.status==='scheduled'&&bodyObj.scheduledAt){
+            const sDate=new Date(bodyObj.scheduledAt);
+            if(sDate<=new Date()){
+                bodyObj.status='published';
+            }else{
+                bodyObj.scheduledAt=sDate;
+            }
+        }
         const newP=await Post.create(bodyObj);
         res.status(201).json({success:true,data:newP});
     }catch(error){
@@ -81,6 +101,14 @@ export const updateP=async(req,res)=>{
             bodyObj.tags=bodyObj.tags.map((t)=>t.trim()).filter(Boolean);
         }else if(typeof bodyObj.tags==='string'){
             bodyObj.tags=bodyObj.tags.split(',').map((t)=>t.trim()).filter(Boolean);
+        }
+        if(bodyObj.status==='scheduled'&&bodyObj.scheduledAt){
+            const sDate=new Date(bodyObj.scheduledAt);
+            if(sDate<=new Date()){
+                bodyObj.status='published';
+            }else{
+                bodyObj.scheduledAt=sDate;
+            }
         }
         const upP=await Post.findByIdAndUpdate(req.params.id,bodyObj,{
             new:true,

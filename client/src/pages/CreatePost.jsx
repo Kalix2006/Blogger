@@ -92,7 +92,7 @@ export default function CreatePost(){
             const postObj={
                 ...fval,
                 status:chosenStatus,
-                scheduledAt:chosenStatus==='scheduled'?fval.scheduledAt:null
+                scheduledAt:chosenStatus==='scheduled' ? new Date(fval.scheduledAt).toISOString() : null
             };
             await createPost(postObj);
             navTo('/admin/dashboard');

@@ -38,7 +38,7 @@ export default function AdminDashboard(){
     const statTot=admPosts.length;
     const statPub=admPosts.filter((p)=>p.status==='published').length;
     const statDft=admPosts.filter((p)=>p.status==='draft').length;
-    const statFeat=admPosts.filter((p)=>Boolean(p.featured)).length;
+    const statSched=admPosts.filter((p)=>p.status==='scheduled').length;
 
     return(
         <div className="d-flex">
@@ -73,14 +73,19 @@ export default function AdminDashboard(){
                     </div>
                     <div className="col-md-3">
                         <div className="card shadow-sm border-0 border-start border-info border-4 p-3 bg-white">
-                            <span className="text-muted small fw-bold text-uppercase">Featured</span>
-                            <h3 className="fw-bold mt-2 text-info">{statFeat}</h3>
+                            <span className="text-muted small fw-bold text-uppercase">Scheduled</span>
+                            <h3 className="fw-bold mt-2 text-info">{statSched}</h3>
                         </div>
                     </div>
                 </div>
 
                 <div className="card shadow-sm border-0 p-4 bg-white">
-                    <h4 className="fw-bold mb-3 text-dark">All Articles</h4>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h4 className="fw-bold m-0 text-dark">All Articles</h4>
+                        <button onClick={loadPosts} className="btn btn-outline-secondary btn-sm">
+                            <i className="bi bi-arrow-clockwise me-1"></i> Refresh
+                        </button>
+                    </div>
                     {loadData && <div className="text-center py-4"><div className="spinner-border text-dark" role="status"></div></div>}
                     {errInfo && <div className="alert alert-danger">{errInfo}</div>}
                     {!loadData && !errInfo && (
@@ -106,13 +111,24 @@ export default function AdminDashboard(){
                                     ):(
                                         admPosts.map((pst)=>(
                                             <tr key={pst._id}>
-                                                <td className="fw-semibold text-dark">{pst.title}</td>
+                                                <td className="fw-semibold text-dark">
+                                                    {pst.title}
+                                                    {pst.featured && <span className="badge bg-danger ms-2">Featured</span>}
+                                                </td>
                                                 <td><span className="badge bg-secondary">{pst.category}</span></td>
                                                 <td>{pst.author}</td>
                                                 <td>
-                                                    <span className={`badge ${pst.status==='published'?'bg-success':'bg-warning text-dark'}`}>
-                                                        {pst.status}
-                                                    </span>
+                                                    {pst.status==='published' && (
+                                                        <span className="badge bg-success">Published</span>
+                                                    )}
+                                                    {pst.status==='draft' && (
+                                                        <span className="badge bg-warning text-dark">Draft</span>
+                                                    )}
+                                                    {pst.status==='scheduled' && (
+                                                        <span className="badge bg-info text-dark" title={`Scheduled: ${new Date(pst.scheduledAt).toLocaleString()}`}>
+                                                            Scheduled ({pst.scheduledAt ? new Date(pst.scheduledAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) : 'later'})
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 <td className="text-muted small">
                                                     {new Date(pst.createdAt).toLocaleDateString()}

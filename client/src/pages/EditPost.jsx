@@ -108,7 +108,7 @@ export default function EditPost(){
             const sendObj={
                 ...currPost,
                 status:finalStatus,
-                scheduledAt:finalStatus==='scheduled'?currPost.scheduledAt:null
+                scheduledAt:finalStatus==='scheduled' && currPost.scheduledAt ? new Date(currPost.scheduledAt).toISOString() : null
             };
             await updatePost(id,sendObj);
             navTo('/admin/dashboard');

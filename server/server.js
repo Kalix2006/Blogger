@@ -10,6 +10,7 @@ import adminRoute from './routes/adminRoute.js';
 import catRoute from './routes/catRoute.js';
 import authorRoute from './routes/authorRoute.js';
 import uploadRoute from './routes/uploadRoute.js';
+import {syncScheduled} from './controllers/postcontroll.js';
 
 dotenv.config();
 
@@ -44,6 +45,10 @@ app.get('/api/health',(req,res)=>{
 });
 
 mongooseConnection();
+
+setInterval(()=>{
+    syncScheduled();
+},30000);
 
 const PORT=process.env.PORT || 5000;
 
