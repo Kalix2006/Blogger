@@ -93,20 +93,28 @@ export default function Home(){
                                             <span className="display-6 fw-bold text-muted opacity-25 position-absolute top-0 end-0 p-3">
                                                 0{idx+1}
                                             </span>
-                                            <div className="mb-2">
-                                                <span className="badge bg-danger-subtle text-danger border border-danger-subtle">Trending</span>
-                                                <span className="badge bg-secondary ms-1">{trP.category}</span>
+                                            <div className="mb-2 pe-4" style={{minHeight:'54px'}}>
+                                                <div className="mb-1">
+                                                    <span className="badge bg-danger-subtle text-danger border border-danger-subtle">
+                                                        <i className="bi bi-fire me-1"></i>Trending
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span className="badge bg-secondary text-truncate d-inline-block" style={{maxWidth:'180px'}} title={trP.category}>
+                                                        {trP.category}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <h6 className="fw-bold text-dark flex-grow-1">
-                                                <Link to={`/blogs/${trP._id}`} className="text-dark text-decoration-none">
+                                            <h6 className="fw-bold text-dark flex-grow-1" style={{minHeight:'42px'}}>
+                                                <Link to={`/blogs/${trP.slug||trP._id}`} className="text-dark text-decoration-none">
                                                     {trP.title}
                                                 </Link>
                                             </h6>
-                                            <p className="text-muted small line-clamp-2 mb-3">
-                                                {trP.descript?.slice(0,90)}...
+                                            <p className="text-muted small mb-3" style={{minHeight:'36px'}}>
+                                                {trP.descript?.slice(0,85)}...
                                             </p>
                                             <div className="d-flex justify-content-between align-items-center text-muted small mt-auto border-top pt-2">
-                                                <span>{trP.author}</span>
+                                                <span className="text-truncate me-2" style={{maxWidth:'110px'}}>{trP.author}</span>
                                                 <span>{new Date(trP.createdAt).toLocaleDateString()}</span>
                                             </div>
                                         </div>
